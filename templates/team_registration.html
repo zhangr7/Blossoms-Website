@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+<section class="min-vh-100">
+<div id="redirectModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content modal-dialog-centered">
+        <div class="modal-body">
+          <p>You will be redirected to a secure third-party payment processor. Click to continue or close this popup and be redirected back to your manage page.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.href = '/manage';">Close</button>
+            <form method="post" action="https://accept.authorize.net/payment/payment" id="formAuthorizeNetTestPage" name="formAuthorizeNetTestPage">
+                <input type="hidden" name="token" value={{token.token}}>
+                <button id="btnContinue" class="btn btn-primary">Continue</button>
+            </form>         
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <script>
+    const myModal = new bootstrap.Modal(document.getElementById('redirectModal')); // creating modal object
+    myModal.show(); // show modal
+</script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+<section class="min-vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card bg-primary text-white" style="border-radius: 25px;">
+            <div class="card-body p-5 text-center">
+              <div class="mb-md-5 mt-md-4 pb-2">
+                <form action="/manage/add_athlete/" method="post">
+                {% csrf_token %}
+                <h2 class="fw-bold mb-2 text-uppercase pb-4">Add an Athlete</h2>
+                <div class="form-outline form-white mb-4">
+                    {{ form.first_name }} <br>
+                    <label class="form-label" for="first_name">First Name</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4">
+                    {{ form.last_name }} <br>
+                    <label class="form-label" for="first_name">Last Name</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4">
+                    {{ form.birthday }} <br>
+                    <label class="form-label" for="birthday">Birthday</label>
+                  </div>
+                <input type="submit" value="Submit" class="btn btn-secondary">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <script>
+    var bday_field = document.getElementById('id_birthday')
+      bday_field.setAttribute('placeholder', "MM/DD/YYYY")
+  </script>
+{% endblock %}

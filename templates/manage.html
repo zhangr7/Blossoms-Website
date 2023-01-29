@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+
+<section class="min-vh-100">
+<div class="col-sm-12 pb-4 pt-4">
+  <h2 class="d-inline-block">Athletes</h2>
+  <button style="float: right;"><a href="add_athlete/">Add an Athlete</a></button>
+</div>
+<table class="table table-bordered border-primary table-hover table-dark table-responsive">
+    <thead>
+      <tr>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Age</th>
+        <th scope="col">Birthday</th>
+        <th scope="col">Current Team</th>
+        <th scope="col" style="width: 15%;">Register for a Team</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for athlete in athlete_list %}    
+      <tr>
+        <td>{{ athlete.first_name }}</td>
+        <td>{{ athlete.last_name }}</td>
+        <td>{{ athlete.calculateAge }}</td>
+        <td>{{ athlete.birthday }}</td>
+        <td>{{ athlete.team }}</td>
+        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="get_name(this)">Register</button></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Select team for </h1>
+      </div>
+      <div class="modal-body d-flex flex-wrap gap-2">
+
+        <div class="announcement-modal d-flex flex-column justify-content-center" style="background-color: #5c86ad;">
+          <u><h5>Spring Open</h5></u>
+          <p class="my-0 py-0">Co-ed 12-18</p>
+          <p class="my-0 py-0">Sundays 1-3pm UMD</p>
+          <p class="mt-0 pt-0">3/19/23 - 5/7/23</p>
+          <p>$300</p>
+          <form action="team_registration/" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="fee" value="300">
+              <input type="hidden" name="playerFirst">
+              <input type="hidden" name="playerLast">
+              <input type="hidden" name="team" value="Co-ed Spring23">
+              <button type="submit">Register</button>
+          </form>
+        </div>
+
+        <div class="announcement-modal d-flex flex-column justify-content-center" style="background-color: #f6a6c2;">
+          <u><h5>Spring Trial</h5></u>
+          <p class="my-0 py-0">Co-ed 12-18</p>
+          <p class="my-0 py-0">Sundays 1-3pm UMD</p>
+          <p class="mt-0 pt-0">3/19/23 - 4/1/23</p>
+          <p class="mb-0 pb-0">$80 for 2 practices</p>
+          <p class="mt-0 pt-0">$250 rest of season</p>
+          <form action="team_registration/" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="fee" value="80">
+              <input type="hidden" name="playerFirst">
+              <input type="hidden" name="playerLast">
+              <input type="hidden" name="team" value="Co-ed Spring23 Trial">
+              <button type="submit">Register</button>
+          </form>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<script>
+  function get_name(x) {
+    let tr = x.parentNode.parentNode;
+    let last = tr.cells[1].innerHTML;
+    const l_list=  document.getElementsByName('playerLast');
+    for (let i = 0; i < l_list.length; i++){
+      l_list[i].value = last
+    }
+    let first = tr.cells[0].innerHTML;
+    const f_list=  document.getElementsByName('playerFirst');
+    for (let i = 0; i < f_list.length; i++){
+      f_list[i].value = first
+    }
+    let name = first + " " + last;
+    document.getElementById('exampleModalLabel').innerHTML += "<strong>" + name + "</strong>";
+    return;
+  }
+</script>
+
+  
+{% endblock %}
