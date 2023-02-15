@@ -3,23 +3,24 @@
 {% block main %}
 
 <section class="min-vh-100">
-<div class="col-sm-12 pb-4 pt-4">
-  <h2 class="d-inline-block">Athletes</h2>
-  <button style="float: right;"><a href="add_athlete/">Add an Athlete</a></button>
+<div class="pb-1 pt-4 row">
+  <div class="col-10"><h2 class="d-inline-block">List of Players</h2></div>
+  <div class="col-2"><button class="btn btn-warning" style="float: right;"><a class="link-dark" href="add_athlete/"><i class="bi bi-plus-circle px-1"></i><span class="d-none d-sm-inline">Add</span></a></button></div>
 </div>
+<div style="overflow-x: auto;">
 <table class="table table-bordered border-primary table-hover table-dark table-responsive">
     <thead>
       <tr>
         <th scope="col">First</th>
         <th scope="col">Last</th>
-        <th scope="col">Age</th>
-        <th scope="col">Birthday</th>
+        <th scope="col" style="width: 5%;">Age</th>
+        <th scope="col" style="width: 15%">Birthday</th>
         <th scope="col">Current Team</th>
-        <th scope="col" style="width: 15%;">Register for a Team</th>
+        <th scope="col" style="width: 10%;">Register for a Team</th>
       </tr>
     </thead>
     <tbody>
-    {% for athlete in athlete_list %}    
+    {% for athlete in athlete_list %}
       <tr>
         <td>{{ athlete.first_name }}</td>
         <td>{{ athlete.last_name }}</td>
@@ -31,46 +32,46 @@
     {% endfor %}
     </tbody>
 </table>
-
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Select team for </h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
       </div>
       <div class="modal-body d-flex flex-wrap gap-2">
 
-        <div class="announcement-modal d-flex flex-column justify-content-center" style="background-color: #5c86ad;">
-          <u><h5>Spring Open</h5></u>
-          <p class="my-0 py-0">Co-ed 12-18</p>
-          <p class="my-0 py-0">Sundays 1-3pm UMD</p>
-          <p class="mt-0 pt-0">3/19/23 - 5/7/23</p>
-          <p>$300</p>
+        <div class="announcement-modal d-flex flex-column" style="background-color: #5c86ad;">
+          <u><h5 class="mx-auto">Spring Open</h5></u>
+          <p class="my-0 py-0 mx-auto">Co-ed 12-18</p>
+          <p class="my-0 py-0 mx-auto">Sundays 1-3pm UMD</p>
+          <p class="mt-0 pt-0 mx-auto">3/19/23 - 5/7/23</p>
+          <p class="mx-auto">$275</p>
           <form action="team_registration/" method="post">
               {% csrf_token %}
-              <input type="hidden" name="fee" value="300">
+              <input type="hidden" name="fee" value="275">
               <input type="hidden" name="playerFirst">
               <input type="hidden" name="playerLast">
               <input type="hidden" name="team" value="Co-ed Spring23">
-              <button type="submit">Register</button>
+              <button class="btn btn-light" type="submit">Register</button>
           </form>
         </div>
 
-        <div class="announcement-modal d-flex flex-column justify-content-center" style="background-color: #f6a6c2;">
-          <u><h5>Spring Trial</h5></u>
-          <p class="my-0 py-0">Co-ed 12-18</p>
-          <p class="my-0 py-0">Sundays 1-3pm UMD</p>
-          <p class="mt-0 pt-0">3/19/23 - 4/1/23</p>
-          <p class="mb-0 pb-0">$80 for 2 practices</p>
-          <p class="mt-0 pt-0">$250 rest of season</p>
+        <div class="announcement-modal d-flex flex-column" style="background-color: #f6a6c2;">
+          <u><h5 class="mx-auto">Spring Trial</h5></u>
+          <p class="my-0 py-0 mx-auto">Co-ed 12-18</p>
+          <p class="my-0 py-0 mx-auto">Sundays 1-3pm UMD</p>
+          <p class="mt-0 pt-0 mx-auto">3/19/23 - 3/26/23</p>
+          <p class="mb-0 pb-0 mx-auto">$80 for 2 practices</p>
+          <p class="mt-0 pt-0 mx-auto">$225 remainder of season</p>
           <form action="team_registration/" method="post">
               {% csrf_token %}
               <input type="hidden" name="fee" value="80">
               <input type="hidden" name="playerFirst">
               <input type="hidden" name="playerLast">
               <input type="hidden" name="team" value="Co-ed Spring23 Trial">
-              <button type="submit">Register</button>
+              <button class="btn btn-light" type="submit">Register</button>
           </form>
         </div>
 
@@ -85,6 +86,7 @@
 
 <script>
   function get_name(x) {
+    document.getElementById('exampleModalLabel').innerHTML = "Select team for ";
     let tr = x.parentNode.parentNode;
     let last = tr.cells[1].innerHTML;
     const l_list=  document.getElementsByName('playerLast');
@@ -102,5 +104,5 @@
   }
 </script>
 
-  
+
 {% endblock %}

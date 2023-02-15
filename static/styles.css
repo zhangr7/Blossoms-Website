@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: 'Avenir-BI';
     src: url(./Metropolis-BoldItalic.otf);
@@ -9,8 +10,7 @@
 }
 
 body {
-    background-image: linear-gradient(to right, #f6a6c2, #5c86ad);
-    overflow: scroll;
+    background-image: linear-gradient(to right, #f6a6c2, #5c86ad);;
 
 }
 
@@ -61,6 +61,7 @@ body {
     width: 600px;
     height: 600px;
     z-index: -1;
+    overflow-x: hidden;
 }
 
 #content-wrap {
@@ -87,7 +88,7 @@ div.announcement {
     width: 75%;
     height: 400px;
     margin: auto;
-    border-radius: 50px;
+    border-radius: 35px;
     opacity: 0;
     animation: fadeIn;
     animation-duration: 1.5s;
@@ -158,14 +159,19 @@ div.about:nth-child(2) {
     animation-delay: .6s;
 }
 
+@media screen and (max-width: 550px) {
+  footer {
+    font-size: 2.5vmin;
+  }
+}
 
 
 footer {
     position: absolute;
     width: 100%;
     height: 12rem;
-    background-color: #fdf38b;  
-    font-family: Avenir-BI; 
+    background-color: #fdf38b;
+    font-family: Avenir-BI;
     overflow: auto;
   }
 

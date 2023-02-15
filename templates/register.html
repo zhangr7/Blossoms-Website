@@ -8,7 +8,7 @@
           <div class="card bg-secondary text-white" style="border-radius: 25px;">
             <div class="card-body p-5 text-center">
               <div class="mb-md-5 mt-md-4 pb-2">
-                
+
                 <form action="/register/" method="post">
                     {% csrf_token %}
                     <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
@@ -27,7 +27,7 @@
                       {{ form.username }}
                       <label class="form-label" for="username">Email</label>
                     </div>
-    
+
                     <div class="form-outline form-white mb-4">
                       {{ form.password1 }}
                       <label class="form-label" for="password1">Password</label>
@@ -37,18 +37,18 @@
                       {{ form.password2 }}
                       <label class="form-label" for="password2">Confirm Password</label>
                     </div>
-    
+
                     <button class="btn btn-outline-light btn-lg px-5" type="submit">Register</button>
-                    
+
                 </form>
-                
+
             </div>
-    
+
                 <div>
                     <p class="mb-0">Already have an account? <a href="/login" class="text-white-50 fw-bold">Log In</a>
                     </p>
                 </div>
-                
+
             </div>
           </div>
         </div>
@@ -62,5 +62,5 @@
       form_fields[field].className += ' form-control form-control-lg'
     };
   </script>
-  
+
 {% endblock %}

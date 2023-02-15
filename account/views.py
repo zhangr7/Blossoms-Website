@@ -12,7 +12,16 @@ collections.Callable = collections.abc.Callable
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import EmailMultiAlternatives
+from django import template
 from .forms import RegisterUserForm, AthleteForm
 from .models import Athlete
 from teams.models import Teams
@@ -23,7 +32,7 @@ from decouple import config
 
 from authorizenet import apicontractsv1
 from authorizenet.apicontrollers import *
-from decimal import *
+
 
 API_ID = config('API_ID')
 TRANSACTION_KEY = config('TRANSACTION_KEY')
@@ -37,7 +46,7 @@ def login_user(request):
         if user is not None:
             login(request, user)
             # Redirect to a success page.
-            return redirect('home')
+            return redirect('manage')
         else:
             # Return an 'invalid login' error message.
             messages.error(request, "Could not find login credentials, try again")
@@ -58,6 +67,8 @@ def register_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
+            user.email = user.username
+            user.save()
             login(request, user)
             messages.success(request, "Successfully registered!")
             return redirect('home')
@@ -106,6 +117,39 @@ def team_registration(request):
     else:
         return redirect('manage')
 
+def password_reset_request(request):
+    if request.method == "POST":
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Request"
+                    plaintext = template.loader.get_template('password_reset_email.txt')
+                    htmltemp = template.loader.get_template('password_reset_email.html')
+                    c = {
+                    "email":user.email,
+                    'domain':'www.blossomswaterpolo.com',
+                    'site_name': 'Blossoms Website',
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': default_token_generator.make_token(user),
+                    'protocol': 'https',
+                    }
+                    text_content = plaintext.render(c)
+                    html_content = htmltemp.render(c)
+                    try:
+                        msg = EmailMultiAlternatives(subject, text_content, 'District Blossoms <dev.blossomswpc@gmail.com>', [user.email], headers = {'Reply-To': 'dev.blossomswpc@gmail.com'})
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send()
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    messages.success(request, 'An email with reset password instructions has been sent to your inbox. It may take a few minutes to receive.')
+                    return redirect ("login")
+            messages.error(request, 'We could not find an account associated with the entered email.')
+    password_reset_form = PasswordResetForm()
+    return render(request, 'password_reset.html', {'form':password_reset_form})
+
 def athlete_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=athletes.csv'
@@ -125,7 +169,7 @@ def getHostedPaymentPageRequest(amount, desc):
     merchantAuth = apicontractsv1.merchantAuthenticationType()
     merchantAuth.name = API_ID
     merchantAuth.transactionKey = TRANSACTION_KEY
-    
+
     setting1 = apicontractsv1.settingType()
     setting1.settingName = apicontractsv1.settingNameEnum.hostedPaymentButtonOptions
     setting1.settingValue = "{\"text\": \"Pay\"}"
@@ -136,12 +180,12 @@ def getHostedPaymentPageRequest(amount, desc):
 
     setting3 = apicontractsv1.settingType()
     setting3.settingName = apicontractsv1.settingNameEnum.hostedPaymentReturnOptions
-    setting3.settingValue = "{\"showReceipt\": true, \"cancelUrl\": \"http://127.0.0.1:8000/\", \"cancelUrlText\": \"Cancel\"}"
+    setting3.settingValue = "{\"showReceipt\": true, \"cancelUrl\": \"https://www.blossomswaterpolo.com\", \"cancelUrlText\": \"Cancel\"}"
 
     setting4 = apicontractsv1.settingType()
     setting4.settingName = apicontractsv1.settingNameEnum.hostedPaymentStyleOptions
     setting4.settingValue = "{\"bgColor\": \"#5c86ad\"}"
-    
+
     setting5 = apicontractsv1.settingType()
     setting5.settingName = apicontractsv1.settingNameEnum.hostedPaymentCustomerOptions
     setting5.settingValue = "{\"showEmail\": true, \"requiredEmail\": true, \"addPaymentProfile\": false}"

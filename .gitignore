@@ -1,0 +1,6 @@
+.env
+.DS_store
+lib
+.txt
+bin
+.code-workspace

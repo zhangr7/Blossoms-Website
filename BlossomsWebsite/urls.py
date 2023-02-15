@@ -21,9 +21,14 @@ from teams import views as teams_views
 from events import views as events_views
 from store import views as store_views
 from account import views as account_views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('secret/', admin.site.urls),
+    path('admin/', admin.site.urls),
+    # path('accounts/', include('django.contrib.auth.urls')),
+    path('forgot_password/', account_views.password_reset_request, name='forgot_password'),
+    path('password_reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirmation.html'), name='password_reset_confirmation'),
+    path('login/reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_done.html'), name='password_reset_complete'),
     path('', homepage_views.home, name='home'),
     path('about/', about_us_views.about, name='about'),
     path('teams/', teams_views.teams, name='teams'),

@@ -26,12 +26,13 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['blossomswaterpolo.com']
+ALLOWED_HOSTS = ['www.blossomswaterpolo.com', 'zhangr7.pythonanywhere.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'account',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,8 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'homepage',
-    'teams',
-    'account'
+    'teams'
 ]
 
 MIDDLEWARE = [
@@ -134,7 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-DEFAULT_FROM_EMAIL = 'blossomswpc@gmail.com'
+DEFAULT_FROM_EMAIL = 'dev.blossomswpc@gmail.com'
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 3153600000
@@ -142,3 +142,9 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_SSL_REDIRECT = True
 SECURE_REFERRER_POLICY = "strict-origin"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'dev.blossomswpc@gmail.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')

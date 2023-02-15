@@ -19,7 +19,7 @@
 
     <body>
         <div id="page-container">
-            <nav class="navbar navbar-expand-md sticky-top" style="background-image: linear-gradient(to right, #f6a6c2, #5c86ad)">
+            <nav class="navbar navbar-expand-md sticky-top" style="background-image: linear-gradient(to right, #f6a6c2, #5c86ad);">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="/" id="emblem">
                         <img src="{% static 'blossoms.png' %}" width="80" height="80">
@@ -64,7 +64,7 @@
             </nav>
 
             <div id="content-wrap d-flex flex-column justify-content-evenly">
-                <main class="container-fluid pt-2 pb-5 text-center"> 
+                <main class="container-fluid pt-2 pb-5 text-center">
                     {% if messages %}
                         {% for message in messages %}
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -76,15 +76,23 @@
                     {% block main %}{% endblock %}
                 </main>
             </div>
-            
+
             <img id="bg-img" src="{% static 'blossom-fall.png' %}" alt="Cherry Blossoms">
-            
+
                 <footer class="text-center text-muted pt-4 px-3">
-                    <div class="d-flex justify-content-between align-self-center">
+                    <div class="d-flex align-self-center">
                         <div>
                             <a href="https://www.usawaterpolo.org" target="_blank"><img src="https://s3.amazonaws.com/usawaterpolo.org/images/responsive_2018/main_logo.svg" alt="USA Water Polo Logo" width="120" height="130"></a>
                         </div>
-                        <div>Contact us at <a href = "mailto: blossomswpc@gmail.com" target="_blank">blossomswpc@gmail.com </a>
+
+                        <div class="AuthorizeNetSeal">
+                            <script type="text/javascript" language="javascript">var ANS_customer_id="1a62c736-b1e2-4b51-9cbe-79d29bfa2726";</script> <script type="text/javascript" language="javascript" src="//verify.authorize.net:443/anetseal/seal.js" ></script>
+                            <div>
+                                 (c) 2005-2023. Authorize.Net is a registered trademark of CyberSource Corporation
+                            </div>
+                        </div>
+
+                        <div class="ms-auto">Contact us at <a href = "mailto: blossomswpc@gmail.com" target="_blank">blossomswpc@gmail.com </a>
                         <br>
                         ----------------------------------
                         <br>
@@ -94,11 +102,11 @@
                         <br>
                         ----------------------------------
                         <br>
-                        <h6>Site created by Robert Zhang <a href="https://github.com/zhangr7" target="_blank"><i class="bi bi-github"></i></a></h6>
-                        </div> 
+                        Site created by Robert Zhang <a href="https://github.com/zhangr7" target="_blank"><i class="bi bi-github"></i></a>
+                        </div>
                     </div>
                 </footer>
-        </div>    
+        </div>
     </body>
 
 </html>
